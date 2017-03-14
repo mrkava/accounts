@@ -1,0 +1,57 @@
+# This is the configuration used to check the rubocop source code.
+
+  inherit_from: .rubocop_todo.yml
+
+Documentation:
+    Enabled: false
+
+Rails:
+    Enabled: true
+
+AllCops:
+  Exclude:
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - 'config/**/*'
+    - 'bin/*'
+    - 'db/**/*'
+  TargetRubyVersion: 2.3
+
+EndOfLine:
+  Enabled: false
+
+Style/Encoding:
+  EnforcedStyle: when_needed
+  Enabled: true
+
+Style/ClassAndModuleChildren:
+  EnforcedStyle: nested
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+  EnforcedStyle: always
+
+Style/NumericLiterals:
+  Enabled: false
+
+Style/BlockComments:
+  Description: 'Do not use block comments.'
+  StyleGuide: '#no-block-comments'
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'config/routes.rb'
+    - 'spec/**/*'
+    - 'config/environments/*'
+
+Metrics/MethodLength:
+  Exclude:
+    - 'app/helpers/*'
+
+Metrics/ClassLength:
+  Exclude:
+- 'app/models/*'
+
+Metrics/LineLength:
+  Max: 99
