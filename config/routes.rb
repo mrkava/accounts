@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
-  get 'user/index'
-
+  resources :users, only: [:index, :show]
   get 'home/index'
 
   devise_for :users
