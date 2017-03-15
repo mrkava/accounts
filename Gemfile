@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+gem 'bootstrap-sass', '~> 3.3.6'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
 gem 'jbuilder', '~> 2.5'
@@ -15,6 +16,8 @@ gem 'omniauth-facebook'
 gem 'puma', '~> 3.0'
 gem 'rails', '~> 5.0.1'
 gem 'sass-rails', '~> 5.0'
+gem 'simple_form'
+gem 'slim-rails'
 gem 'uglifier', '>= 1.3.0'
 
 group :development, :test do
