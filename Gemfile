@@ -19,6 +19,7 @@ gem 'sass-rails', '~> 5.0'
 gem 'simple_form'
 gem 'slim-rails'
 gem 'uglifier', '>= 1.3.0'
+gem 'unobtrusive_flash', '>=3'
 
 group :development, :test do
   gem 'byebug', platform: :mri
