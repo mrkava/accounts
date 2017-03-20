@@ -6,8 +6,8 @@ header
           span.icon-bar
           span.icon-bar
           span.icon-bar
-        a.navbar-brand href="index.html"
-          img alt="" height="52" src="img/logo.png" width="199"
+        a.navbar-brand href="/"
+          img alt="Uabets accounts" height="45" src="/img/logo.png" width="250"
       .navbar-collapse.collapse
         ul.nav.navbar-nav
           li
@@ -18,7 +18,22 @@ header
             a href="/about" Rules
           li
             a href="/about" Contacts
-          li
-            a href="/about" Sign in
-          li
-            a href="/about" Sign up
+          - unless current_user
+            li
+              = link_to('Sign in', new_user_session_path)
+            li
+              = link_to('Sign up', new_user_registration_path)
+          - else
+            li.dropdown
+              a.dropdown-toggle data-close-others="false" data-delay="0" data-hover="dropdown" data-toggle="dropdown" href="#"
+                | My account
+                i.fa.fa-angle-down
+              ul.dropdown-menu
+                li
+                  a href="#"  Manage accounts
+                li
+                  a href="#"  Payments
+                li
+                  a href="#"  My settings
+                li
+                  = link_to('Logout', destroy_user_session_path, method: :delete)

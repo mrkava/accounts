@@ -15,7 +15,7 @@
 /* === custom icon === */
 @import url('custom-fonts.css');
 /* ==== overwrite bootstrap standard ==== */
-@import url('theme.scss');
+@import url('theme.css');
 @import url('animate.css');
 
 /* ===================================
@@ -320,7 +320,7 @@ header .navbar-collapse  ul.navbar-nav {
 }
 
 header .navbar-default{
-  background-color: #fff;
+  background-color: #f2f2f2;
   border-bottom: 1px solid #ddd;
 }
 
