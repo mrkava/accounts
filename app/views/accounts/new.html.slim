@@ -1,0 +1,7 @@
+h1 Create account
+= simple_form_for @account, url: accounts_path do |f|
+  = f.input :bookmaker, label: 'Bookmaker'
+  = f.input :age, label: 'Account age'
+  = f.input :own, label: 'Is it your own account?'
+  = f.input :comment, label: 'Additional information about account'
+  = f.button :submit, 'Add account'
