@@ -6,6 +6,12 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:facebook]
   has_many :accounts
 
+  validates :name, :email, :password, presence: true
+
+  validates :name, length: { minimum: 2, maximum: 50 }
+
+  validates :password, length: { minimum: 6 }
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email
