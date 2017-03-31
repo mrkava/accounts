@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :users, only: [:index]
-  resources :accounts, only: [:index, :new, :create, :edit, :update, :show]
+  resources :accounts, only: [:index, :new, :create, :edit, :update, :show, :destroy] do
+    collection do
+      get :manage_accounts
+    end
+  end
   get 'home/index'
   get 'about', to: 'home#about'
   root to: 'home#index'

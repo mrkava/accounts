@@ -1,10 +1,10 @@
 .container
   .row
     .col-md-6.col-md-offset-3
-      h1 Create account
-      = simple_form_for @account, url: accounts_path do |f|
+      h1 Edit account
+      = simple_form_for @account, url: account_path do |f|
         = f.input :bookmaker, label: 'Bookmaker', collection: Appvalues['bookmaker']
         = f.input :age, label: 'Account age (in months)'
         = f.input :own, label: 'Is it your own account?'
         = f.input :comment, label: 'Additional information about account'
-        = f.button :submit, 'Add account'
+        = f.button :submit, 'Edit account'

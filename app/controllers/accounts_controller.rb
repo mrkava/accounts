@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  before_action :find_account, only: [:show]
+  before_action :find_account, only: [:show, :edit, :update, :destroy]
 
   def show; end
 
@@ -14,6 +14,27 @@ class AccountsController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def edit; end
+
+  def update
+    if @account.update_attributes(account_params)
+      flash[:success] = 'Account updated'
+      redirect_to manage_accounts_accounts_path
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    @account.destroy
+    flash[:notice] = 'Account was deleted'
+    redirect_back(fallback_location: root_path)
+  end
+
+  def manage_accounts
+    @accounts = current_user.accounts
   end
 
   private
