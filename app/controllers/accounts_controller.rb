@@ -46,5 +46,7 @@ class AccountsController < ApplicationController
 
   def find_account
     @account = Account.find(params[:id])
+    return if @account.user == current_user
+    redirect_to root_path, alert: 'Access denied!'
   end
 end
