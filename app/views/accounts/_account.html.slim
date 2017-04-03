@@ -3,5 +3,6 @@ tr
   td= account.age
   td= account.own
   td= account.comment
+  td= account.status
   td= link_to 'Edit', edit_account_path(account)
   td= link_to 'Delete', account_path(account), method: :delete, data: {confirm: 'Delete account, are you sure?'}
