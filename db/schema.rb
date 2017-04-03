@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170403230145) do
+ActiveRecord::Schema.define(version: 20170403231949) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "bookmaker"
@@ -21,6 +21,7 @@ ActiveRecord::Schema.define(version: 20170403230145) do
     t.datetime "updated_at",                           null: false
     t.integer  "user_id"
     t.integer  "status",                   default: 0
+    t.integer  "buyer_id",                 default: 0
     t.index ["user_id"], name: "index_accounts_on_user_id", using: :btree
   end
 

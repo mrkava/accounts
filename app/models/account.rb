@@ -7,4 +7,6 @@ class Account < ApplicationRecord
   validates :bookmaker, inclusion: { in: Appvalues['bookmaker'] }
   validates :age, inclusion: { in: 1..180 }
   validates :comment, length: { maximum: 1000 }
+
+  scope :bought, ->(a) { where(buyer_id: a) }
 end

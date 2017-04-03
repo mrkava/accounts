@@ -35,6 +35,7 @@ class AccountsController < ApplicationController
 
   def manage_accounts
     @accounts = current_user.accounts
+    @bought_accounts = Account.bought(current_user.id)
   end
 
   private

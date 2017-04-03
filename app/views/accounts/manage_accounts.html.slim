@@ -1,9 +1,11 @@
 h1 Manage accounts
+h3 Added accounts
 .container
   .table-responsive
     table.table.table-bordered
       thead
         tr
+          th Date_added
           th Bookmaker
           th Age
           th Own?
@@ -14,3 +16,19 @@ h1 Manage accounts
       tbody
         tr
           = render @accounts
+h3 Bought accounts
+.container
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr
+          th Date_added
+          th Bookmaker
+          th Age
+          th Own?
+          th Comment
+          th Status
+          th Seller name
+      tbody
+        tr
+          = render 'bought_account', collection: @bought_accounts
