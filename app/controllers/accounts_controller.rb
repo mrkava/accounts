@@ -1,5 +1,6 @@
 class AccountsController < ApplicationController
   before_action :find_account, only: [:show, :edit, :update, :destroy]
+  before_action :check_opened, only: [:edit, :update, :destroy]
 
   def show; end
 
@@ -28,6 +29,7 @@ class AccountsController < ApplicationController
   end
 
   def destroy
+    return unless @account.opened?
     @account.destroy
     flash[:notice] = 'Account was deleted'
     redirect_back(fallback_location: root_path)
@@ -49,5 +51,10 @@ class AccountsController < ApplicationController
     @account = Account.find(params[:id])
     return if @account.user == current_user
     redirect_to root_path, alert: 'Access denied!'
+  end
+
+  def check_opened
+    return if @account.opened?
+    redirect_to manage_accounts_accounts_path, alert: 'You can not change account'
   end
 end
