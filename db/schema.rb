@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170404134015) do
+ActiveRecord::Schema.define(version: 20170404145200) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "bookmaker"
@@ -29,12 +29,12 @@ ActiveRecord::Schema.define(version: 20170404134015) do
     t.integer  "current_price_cents"
     t.integer  "final_price_cents"
     t.integer  "minimum_price_cents"
-    t.integer  "payment_type"
     t.datetime "end_date"
     t.integer  "user_id"
     t.integer  "account_id"
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
+    t.integer  "payment_type"
     t.index ["account_id"], name: "index_auctions_on_account_id", using: :btree
     t.index ["user_id"], name: "index_auctions_on_user_id", using: :btree
   end

@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable,
          :omniauthable, omniauth_providers: [:facebook]
   has_many :accounts
+  has_many :auctions
 
   validates :name, :email, :password, presence: true
 

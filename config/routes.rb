@@ -5,6 +5,11 @@ Rails.application.routes.draw do
       get :manage_accounts
     end
   end
+  resources :auctions, only: [:index, :new, :create, :edit, :update, :show, :destroy] do
+    collection do
+      get :manage_auctions
+    end
+  end
   get 'home/index'
   get 'about', to: 'home#about'
   root to: 'home#index'

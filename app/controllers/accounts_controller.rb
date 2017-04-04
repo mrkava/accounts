@@ -29,7 +29,6 @@ class AccountsController < ApplicationController
   end
 
   def destroy
-    return unless @account.opened?
     @account.destroy
     flash[:notice] = 'Account was deleted'
     redirect_back(fallback_location: root_path)

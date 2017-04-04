@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   belongs_to :user
+  has_many :auctions
 
   enum status: [:opened, :auction, :sold]
 
@@ -9,4 +10,9 @@ class Account < ApplicationRecord
   validates :comment, length: { maximum: 1000 }
 
   scope :bought, ->(a) { where(buyer_id: a) }
+  scope :opened, -> { where(status: :opened) }
+
+  def to_s
+    "#{id} : #{created_at} : #{bookmaker} : #{age}"
+  end
 end

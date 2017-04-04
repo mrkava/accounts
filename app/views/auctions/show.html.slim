@@ -1,0 +1,5 @@
+h1 Auction № #{@auction.id}
+p Account: #{@auction.account.to_s}
+p Final price: #{humanized_money_with_symbol @auction.final_price}
+p Minimum price: #{humanized_money_with_symbol @auction.minimum_price}
+p End date: #{@auction.end_date}
