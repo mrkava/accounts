@@ -1,5 +1,6 @@
 class AuctionsController < ApplicationController
-  before_action :find_auction, only: [:show, :edit, :update, :destroy]
+  before_action :find_auction, only: [:show, :edit, :update, :destroy, :start]
+  before_action :check_created, only: [:edit, :update, :destroy, :start]
 
   def show; end
 
@@ -11,6 +12,7 @@ class AuctionsController < ApplicationController
   def create
     @auction = current_user.auctions.new(auction_params)
     if @auction.save
+      @auction.account.update_attribute('status', :auction)
       redirect_to @auction, notice: 'Auction was created!'
     else
       render 'new'
@@ -30,12 +32,18 @@ class AuctionsController < ApplicationController
 
   def destroy
     @auction.destroy
+    @auction.account.update_attribute('status', :opened)
     flash[:notice] = 'Account was deleted'
     redirect_back(fallback_location: root_path)
   end
 
   def manage_auctions
     @auctions = current_user.auctions
+  end
+
+  def start
+    @auction.update_attribute('status', :active)
+    redirect_back(fallback_location: root_path)
   end
 
   private
@@ -47,5 +55,10 @@ class AuctionsController < ApplicationController
 
   def find_auction
     @auction = Auction.find(params[:id])
+  end
+
+  def check_created
+    return if @auction.created?
+    redirect_to manage_auctions_auctions_path, alert: 'You can not change auction'
   end
 end

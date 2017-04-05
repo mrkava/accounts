@@ -1,0 +1,25 @@
+h1 Manage auctions
+.container
+  .row
+    = link_to new_auction_path do
+      .btn.btn-primary.btn-large
+        i.fa.fa-check-square-o
+        |  Create auction
+  .row
+    .table-responsive
+      table.table.table-bordered
+        thead
+          tr
+            th Date_added
+            th Account
+            th Minimum price
+            th Final price
+            th Payment type
+            th End date
+            th Status
+            th Edit
+            th Delete
+            th Start auction
+        tbody
+          tr
+            = render 'manage', collection: @auctions

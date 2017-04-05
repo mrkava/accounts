@@ -9,6 +9,9 @@ Rails.application.routes.draw do
     collection do
       get :manage_auctions
     end
+    member do
+      patch :start
+    end
   end
   get 'home/index'
   get 'about', to: 'home#about'
