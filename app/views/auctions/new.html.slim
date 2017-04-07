@@ -6,6 +6,6 @@
         = f.input :account_id, label: 'Account', collection: @accounts, label_method: :to_s, value_method: :id
         = f.input :final_price, label: 'Price for immediate buy'
         = f.input :minimum_price, label: 'Minimum price'
-        = f.input :payment_type, label: 'Payment type'
+        = f.input :payment_type, label: 'Payment type', collection: Auction::PAYMENT_TYPES
         = f.input :end_date, label: 'End of auction'
         = f.button :submit, 'Add auction'

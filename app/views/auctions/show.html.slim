@@ -2,4 +2,6 @@ h1 Auction № #{@auction.id}
 p Account: #{@auction.account.to_s}
 p Final price: #{humanized_money_with_symbol @auction.final_price}
 p Minimum price: #{humanized_money_with_symbol @auction.minimum_price}
-p End date: #{@auction.end_date}
+p Payment type: #{Auction::PAYMENT_TYPES.key(@auction.payment_type)}
+p End date: #{date_formatter @auction.end_date}
+p= link_to 'Manage your auctions', manage_auctions_auctions_path

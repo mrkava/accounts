@@ -13,6 +13,6 @@ class Account < ApplicationRecord
   scope :opened, -> { where(status: :opened) }
 
   def to_s
-    "#{id} : #{created_at} : #{bookmaker} : #{age}"
+    "#{id} : #{created_at.strftime('%m.%d.%Y, %H:%M')} : #{bookmaker}"
   end
 end

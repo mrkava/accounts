@@ -1,11 +1,11 @@
 - @auctions.each do |auction|
   tr
-    td= auction.created_at
+    td= date_formatter auction.created_at
     td= auction.account.to_s
-    td= auction.minimum_price
-    td= auction.final_price
-    td= auction.payment_type
-    td= auction.end_date
+    td= humanized_money_with_symbol auction.minimum_price
+    td= humanized_money_with_symbol auction.final_price
+    td= Auction::PAYMENT_TYPES.key(auction.payment_type)
+    td= date_formatter auction.end_date
     th= auction.status
     - if auction.created?
       td= link_to 'Edit', edit_auction_path(auction)
