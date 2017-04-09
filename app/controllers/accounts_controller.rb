@@ -54,6 +54,7 @@ class AccountsController < ApplicationController
 
   def check_opened
     return if @account.opened?
-    redirect_to manage_accounts_accounts_path, alert: 'You can not change account'
+    redirect_to manage_accounts_accounts_path,
+                alert: 'You can not change account'
   end
 end

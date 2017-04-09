@@ -14,7 +14,7 @@ class AuctionsController < ApplicationController
   def create
     @auction = current_user.auctions.new(auction_params)
     if @auction.save
-      @auction.account.update_attribute('status', :auction)
+      @auction.account.create_auction!
       redirect_to @auction, notice: 'Auction was created!'
     else
       render 'new'
@@ -34,7 +34,7 @@ class AuctionsController < ApplicationController
 
   def destroy
     @auction.destroy
-    @auction.account.update_attribute('status', :opened)
+    @auction.account.delete_auction!
     flash[:notice] = 'Account was deleted'
     redirect_back(fallback_location: root_path)
   end
@@ -44,7 +44,7 @@ class AuctionsController < ApplicationController
   end
 
   def start
-    @auction.update_attribute('status', :active)
+    @auction.start_auction!
     redirect_back(fallback_location: root_path)
   end
 
@@ -62,7 +62,8 @@ class AuctionsController < ApplicationController
 
   def check_created
     return if @auction.created?
-    redirect_to manage_auctions_auctions_path, alert: 'You can not change auction'
+    redirect_to manage_auctions_auctions_path,
+                alert: 'You can not change auction'
   end
 
   def check_user_access
