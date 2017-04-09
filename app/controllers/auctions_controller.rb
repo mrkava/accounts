@@ -1,12 +1,14 @@
 class AuctionsController < ApplicationController
   before_action :find_auction, only: [:show, :edit, :update, :destroy, :start]
   before_action :check_created, only: [:edit, :update, :destroy, :start]
+  before_action :check_user_access, only: [:edit, :update, :destroy, :start]
 
   def show; end
 
   def new
     @auction = current_user.auctions.new
     @accounts = current_user.accounts.opened
+    @selected_account_id = params[:selected_account] || @accounts.first.id
   end
 
   def create
@@ -50,7 +52,8 @@ class AuctionsController < ApplicationController
 
   def auction_params
     params.require(:auction).permit(:final_price, :minimum_price,
-                                    :payment_type, :end_date, :account_id)
+                                    :payment_type, :end_date, :account_id,
+                                    :selected_account)
   end
 
   def find_auction
@@ -60,5 +63,10 @@ class AuctionsController < ApplicationController
   def check_created
     return if @auction.created?
     redirect_to manage_auctions_auctions_path, alert: 'You can not change auction'
+  end
+
+  def check_user_access
+    return if @auction.user == current_user
+    redirect_to root_path, alert: 'Access denied!'
   end
 end

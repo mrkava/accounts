@@ -10,4 +10,5 @@
     - if auction.created?
       td= link_to 'Edit', edit_auction_path(auction)
       td= link_to 'Delete', auction_path(auction), method: :delete, data: {confirm: 'Delete auction, are you sure?'}
-      td= link_to 'Start', start_auction_path(auction), method: :patch
+      td= link_to 'Start', start_auction_path(auction), method: :patch,
+                           data: {confirm: 'Start auction, are you sure? You could not change auction after start'}

@@ -9,3 +9,4 @@ tr
   - if account.opened?
     td= link_to 'Edit', edit_account_path(account)
     td= link_to 'Delete', account_path(account), method: :delete, data: {confirm: 'Delete account, are you sure?'}
+    td= link_to 'Create auction', new_auction_path(selected_account: account.id)
