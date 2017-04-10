@@ -11,6 +11,8 @@ class Auction < ApplicationRecord
             presence: true
   validate :end_date_validation, :price_validation
 
+  scope :active, -> { where(status: :active) }
+
   # monetize :current_price_cents, numericality: { greater_than: 0 }
   monetize :minimum_price_cents, numericality: { greater_than: 0 }
   monetize :final_price_cents, numericality: { greater_than: 0 }
