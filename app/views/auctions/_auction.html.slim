@@ -2,9 +2,14 @@ tr
   td= auction.account.user.name
   td= auction.account.bookmaker
   td= auction.account.age
-  td= auction.account.own
+  - if auction.account.own?
+    td
+      i.fa.fa-check-square-o
+  - else
+    td
+      i.fa.fa-square-o
   td= auction.account.comment
   td= humanized_money_with_symbol auction.minimum_price
   td= humanized_money_with_symbol auction.final_price
   td= Auction::PAYMENT_TYPES.key(auction.payment_type)
-  td= auction.end_date
+  td= date_formatter auction.end_date

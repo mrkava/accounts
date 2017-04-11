@@ -6,7 +6,7 @@
     td= humanized_money_with_symbol auction.final_price
     td= Auction::PAYMENT_TYPES.key(auction.payment_type)
     td= date_formatter auction.end_date
-    th= auction.status
+    td= auction.status
     - if auction.created?
       td= link_to 'Edit', edit_auction_path(auction)
       td= link_to 'Delete', auction_path(auction), method: :delete, data: {confirm: 'Delete auction, are you sure?'}

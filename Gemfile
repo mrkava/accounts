@@ -6,11 +6,13 @@ git_source(:github) do |repo_name|
 end
 
 gem 'aasm'
+gem 'bootstrap-kaminari-views'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'coffee-rails', '~> 4.2'
 gem 'devise'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
+gem 'kaminari'
 gem 'money-rails', '~>1'
 gem 'mysql2'
 gem 'omniauth'

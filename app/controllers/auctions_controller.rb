@@ -4,7 +4,7 @@ class AuctionsController < ApplicationController
   before_action :check_user_access, only: [:edit, :update, :destroy, :start]
 
   def index
-    @auctions = Auction.active
+    @auctions = Auction.active.page(params[:page]).per(3)
   end
 
   def show; end
