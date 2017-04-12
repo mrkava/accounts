@@ -3,6 +3,7 @@ class Auction < ApplicationRecord
 
   belongs_to :user
   belongs_to :account
+  has_many :bids
 
   enum status: [:created, :active, :finished]
   enum payment_type: [:immediate_pay, :half_pay, :end_period_pay]
@@ -13,7 +14,7 @@ class Auction < ApplicationRecord
 
   scope :active, -> { where(status: :active) }
 
-  # monetize :current_price_cents, numericality: { greater_than: 0 }
+  monetize :current_price_cents, numericality: { greater_than: 0 }
   monetize :minimum_price_cents, numericality: { greater_than: 0 }
   monetize :final_price_cents, numericality: { greater_than: 0 }
 

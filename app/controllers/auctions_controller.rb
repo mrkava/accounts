@@ -17,6 +17,7 @@ class AuctionsController < ApplicationController
 
   def create
     @auction = current_user.auctions.new(auction_params)
+    @auction.current_price = @auction.minimum_price
     if @auction.save
       @auction.account.create_auction!
       redirect_to @auction, notice: 'Auction was created!'
@@ -28,6 +29,7 @@ class AuctionsController < ApplicationController
   def edit; end
 
   def update
+    @auction.current_price = auction_params[:minimum_price]
     if @auction.update_attributes(auction_params)
       flash[:success] = 'Auction updated'
       redirect_to manage_auctions_auctions_path

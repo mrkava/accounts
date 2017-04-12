@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     end
   end
   resources :auctions, only: [:index, :new, :create, :edit, :update, :show, :destroy] do
+    resources :bids
     collection do
       get :manage_auctions
     end

@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :omniauthable, omniauth_providers: [:facebook]
   has_many :accounts
   has_many :auctions
+  has_many :bids
 
   validates :name, :email, :password, presence: true
 
