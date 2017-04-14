@@ -11,8 +11,13 @@ tr
   td= auction.account.comment
   td
     = simple_form_for [auction, auction.bids.new] do |f|
-      = f.input :stake, input_html: { value: auction.current_price, min: auction.current_price }
-      = f.button :submit, data: { confirm: 'Do you confirm the stake? This operation could not be canceled' }
+      = f.input_field :stake, label: false, value: auction.current_price,
+              type: :number, min: auction.current_price
+      td
+        = f.button :submit, class: 'btn-primary',
+                data: { confirm: 'Do you confirm the stake? This operation could not be canceled' }
   td= humanized_money_with_symbol auction.final_price
   td= Auction::PAYMENT_TYPES.key(auction.payment_type)
   td= date_formatter auction.end_date
+  td= link_to auction do
+    i.fa.fa-search

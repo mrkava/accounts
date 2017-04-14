@@ -3,11 +3,13 @@ class BidsController < ApplicationController
 
   def create
     @auction = Auction.find(params[:auction_id])
+    @last_bid = @auction.bids.last
     @bid = @auction.bids.new(bid_params)
     @bid.user = current_user
 
     if @bid.save
       @auction.update_attributes(current_price: @bid.stake)
+      @last_bid.update_attributes(status: :expired)
       redirect_to auctions_path, notice: 'Bid was created!'
     else
       redirect_to auctions_path,
