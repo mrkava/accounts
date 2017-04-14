@@ -9,7 +9,7 @@ class BidsController < ApplicationController
 
     if @bid.save
       @auction.update_attributes(current_price: @bid.stake)
-      @last_bid.update_attributes(status: :expired)
+      @last_bid.update_attributes(status: :expired) if @last_bid.present?
       redirect_to auctions_path, notice: 'Bid was created!'
     else
       redirect_to auctions_path,
