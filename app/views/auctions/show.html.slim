@@ -34,24 +34,34 @@
           h4 End date: #{date_formatter @auction.end_date}
         .pricing-content
           ul
-            li Minimum price: #{humanized_money_with_symbol @auction.minimum_price}
-            li Current price: #{humanized_money_with_symbol @auction.current_price}
-            li Final price: #{humanized_money_with_symbol @auction.final_price}
-            li Payment type: #{Auction::PAYMENT_TYPES.key(@auction.payment_type)}
+            li
+              span.bold Minimum price:
+              = " #{humanized_money_with_symbol @auction.minimum_price}"
+            li
+              span.bold Current price:
+              = " #{humanized_money_with_symbol @auction.current_price}"
+            li
+              span.bold Final price:
+              = " #{humanized_money_with_symbol @auction.final_price}"
+            li
+              span.bold Payment type:
+              = " #{Auction::PAYMENT_TYPES.key(@auction.payment_type)}"
         .pricing-action
           = link_to "Buy immediately for #{humanized_money_with_symbol @auction.final_price}", auctions_path, class: 'btn btn-medium btn-theme'
     .col-lg-4
-      .pricing-box-alt
+      .pricing-box-alt.special
         .pricing-heading
           h3 Last bids
         .pricing-terms
           h4 Info about 4 last bids
         .pricing-content
           ul
-            li Bla-bla-bla
-            li Bla-bla-bla
-            li Bla-bla-bla
-            li Bla-bla-bla
+            - @bids.each do |bid|
+              li
+                span.bold Date:
+                = " #{date_formatter bid.created_at} "
+                span.bold Stake:
+                = " #{humanized_money_with_symbol bid.stake}"
         .pricing-action
           = simple_form_for [@auction, @auction.bids.new] do |f|
             = f.input_field :stake, label: false, value: @auction.current_price,

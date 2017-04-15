@@ -11,7 +11,7 @@ class AccountsController < ApplicationController
   def create
     @account = current_user.accounts.new(account_params)
     if @account.save
-      redirect_to @account, notice: 'Account was created!'
+      redirect_to manage_accounts_accounts_path, notice: 'Account was created!'
     else
       render 'new'
     end

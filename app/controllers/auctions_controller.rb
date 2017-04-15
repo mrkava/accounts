@@ -10,6 +10,7 @@ class AuctionsController < ApplicationController
 
   def show
     check_user_access if @auction.created?
+    @bids = @auction.bids.last_bids
   end
 
   def new
