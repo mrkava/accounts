@@ -2,12 +2,15 @@ class AuctionsController < ApplicationController
   before_action :find_auction, only: [:show, :edit, :update, :destroy, :start]
   before_action :check_created, only: [:edit, :update, :destroy, :start]
   before_action :check_user_access, only: [:edit, :update, :destroy, :start]
+  skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
     @auctions = Auction.active.page(params[:page]).per(3)
   end
 
-  def show; end
+  def show
+    check_user_access if @auction.created?
+  end
 
   def new
     @auction = current_user.auctions.new
@@ -74,6 +77,7 @@ class AuctionsController < ApplicationController
 
   def check_user_access
     return if @auction.user == current_user
-    redirect_to root_path, alert: 'Access denied!'
+    flash[:alert] = 'Access denied!'
+    redirect_back(fallback_location: root_path)
   end
 end

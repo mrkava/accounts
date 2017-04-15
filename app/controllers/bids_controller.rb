@@ -10,11 +10,11 @@ class BidsController < ApplicationController
     if @bid.save
       @auction.update_attributes(current_price: @bid.stake)
       @last_bid.update_attributes(status: :expired) if @last_bid.present?
-      redirect_to auctions_path, notice: 'Bid was created!'
+      flash[:notice] = 'Bid was created!'
+      redirect_back(fallback_location: root_path)
     else
-      redirect_to auctions_path,
-                  notice: "Bid was NOT created! \
-                          #{@bid.errors.messages[:stake].first}"
+      flash[:notice] = "Bid was NOT created! #{@bid.errors.messages[:stake].first}"
+      redirect_back(fallback_location: root_path)
     end
   end
 

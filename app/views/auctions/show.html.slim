@@ -1,7 +1,62 @@
-h1 Auction № #{@auction.id}
-p Account: #{@auction.account.to_s}
-p Final price: #{humanized_money_with_symbol @auction.final_price}
-p Minimum price: #{humanized_money_with_symbol @auction.minimum_price}
-p Payment type: #{Auction::PAYMENT_TYPES.key(@auction.payment_type)}
-p End date: #{date_formatter @auction.end_date}
-p= link_to 'Manage your auctions', manage_auctions_auctions_path
+.container
+  .row
+    .col-lg-12
+      h1.center_header Auction № #{@auction.id}
+    .col-lg-4
+      .pricing-box-alt.special
+        .pricing-heading
+          h3 Account information
+        .pricing-terms
+          h4 Bookmaker: #{@auction.account.bookmaker}
+        .pricing-content
+          ul
+            li
+              span.bold Age:
+              = " #{@auction.account.age}"
+              | months
+            li
+              span.bold Own account:
+              - if @auction.account.own?
+                |  yes
+              - else
+                |  no
+            li
+              span.bold Comment:
+              = " #{@auction.account.comment}"
+            li
+              span.bold Seller:
+              = " #{@auction.account.user.name}"
+    .col-lg-4
+      .pricing-box-alt.special
+        .pricing-heading
+          h3 Auction information
+        .pricing-terms
+          h4 End date: #{date_formatter @auction.end_date}
+        .pricing-content
+          ul
+            li Minimum price: #{humanized_money_with_symbol @auction.minimum_price}
+            li Current price: #{humanized_money_with_symbol @auction.current_price}
+            li Final price: #{humanized_money_with_symbol @auction.final_price}
+            li Payment type: #{Auction::PAYMENT_TYPES.key(@auction.payment_type)}
+        .pricing-action
+          = link_to "Buy immediately for #{humanized_money_with_symbol @auction.final_price}", auctions_path, class: 'btn btn-medium btn-theme'
+    .col-lg-4
+      .pricing-box-alt
+        .pricing-heading
+          h3 Last bids
+        .pricing-terms
+          h4 Info about 4 last bids
+        .pricing-content
+          ul
+            li Bla-bla-bla
+            li Bla-bla-bla
+            li Bla-bla-bla
+            li Bla-bla-bla
+        .pricing-action
+          = simple_form_for [@auction, @auction.bids.new] do |f|
+            = f.input_field :stake, label: false, value: @auction.current_price,
+                    type: :number, min: @auction.current_price
+            td
+              = f.button :submit, class: 'btn-theme',
+                      data: {confirm: 'Do you confirm the stake? This operation could not be canceled'}
+  p= link_to 'Return to all auctions list', auctions_path
