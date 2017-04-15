@@ -1,10 +1,11 @@
 h1 Manage auctions
 .container
-  .row
-    = link_to new_auction_path do
-      .btn.btn-primary.btn-large
-        i.fa.fa-check-square-o
-        |  Create auction
+  - if current_user.accounts.opened.any?
+    .row
+      = link_to new_auction_path do
+        .btn.btn-primary.btn-large
+          i.fa.fa-check-square-o
+          |  Create auction
   .row
     .table-responsive
       table.table.table-bordered

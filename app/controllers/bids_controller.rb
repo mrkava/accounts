@@ -1,4 +1,6 @@
 class BidsController < ApplicationController
+  before_action :check_user_access, only: [:create]
+
   def new; end
 
   def create
@@ -13,12 +15,19 @@ class BidsController < ApplicationController
       flash[:notice] = 'Bid was created!'
       redirect_back(fallback_location: root_path)
     else
-      flash[:notice] = "Bid was NOT created! #{@bid.errors.messages[:stake].first}"
+      flash[:alert] = "Bid was NOT created! #{@bid.errors.messages[:stake].first}"
       redirect_back(fallback_location: root_path)
     end
   end
 
   private
+
+  def check_user_access
+    @auction = Auction.find(params[:auction_id])
+    return if @auction.user != current_user
+    flash[:alert] = 'You can not buy your own account!'
+    redirect_back(fallback_location: root_path)
+  end
 
   def bid_params
     params.require(:bid).permit(:stake)

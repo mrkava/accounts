@@ -2,7 +2,7 @@ class Account < ApplicationRecord
   include AASM
 
   belongs_to :user
-  has_many :auctions
+  has_many :auctions, dependent: :destroy
 
   enum status: [:opened, :auction, :sold]
 

@@ -1,9 +1,10 @@
 - @bought_accounts.each do |bought_account|
   tr
     td= bought_account.id
-    td= bought_account.created_at
+    td= date_formatter bought_account.created_at
     td= bought_account.bookmaker
     td= bought_account.age
     td= bought_account.own
     td= bought_account.comment
+    td= humanized_money_with_symbol bought_account.auctions.last.current_price
     td= bought_account.user.name

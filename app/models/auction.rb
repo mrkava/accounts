@@ -35,6 +35,17 @@ class Auction < ApplicationRecord
     end
   end
 
+  def close_auction
+    self.finish_auction!
+    if self.bids.any?
+      self.account.update_attributes(buyer_id: self.bids.last.user.id, status: :sold)
+    else
+      self.account.update_attributes(status: :opened)
+    end
+  end
+
+  private
+
   def end_date_validation
     return unless end_date.present? && end_date < Time.current + 24.hours
     errors.add(:end_date, 'Auction end must be at least 24 hours from now')
