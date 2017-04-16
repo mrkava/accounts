@@ -1,7 +1,12 @@
 .container
   .row
-    .col-lg-12
-      h1.center_header Auction № #{@auction.id}
+    .col-lg-12.center_header
+      h1 Auction № #{@auction.id}
+      - if @auction.created?
+        p
+          = link_to 'Start auction', start_auction_path(@auction), method: :patch,
+                  data: {confirm: 'Start auction, are you sure? You could not change auction after start'},
+                  class: 'btn btn-lg btn-success'
     .col-lg-4
       .pricing-box-alt.special
         .pricing-heading
@@ -13,7 +18,7 @@
             li
               span.bold Age:
               = " #{@auction.account.age} "
-              | months
+              | month(s)
             li
               span.bold Own account:
               - if @auction.account.own?
@@ -52,7 +57,9 @@
         - if @auction.active?
           .pricing-action
             = link_to "Buy immediately for #{humanized_money_with_symbol @auction.final_price}",
-                    auctions_path, class: 'btn btn-medium btn-theme'
+                    buy_immediately_auction_path(@auction), method: :patch,
+                    class: 'btn btn-theme',
+                    data: {confirm: "You will buy this account for #{humanized_money_with_symbol @auction.final_price}. Confirm operation?"}
     .col-lg-4
       .pricing-box-alt.special
         .pricing-heading
@@ -75,4 +82,9 @@
               td
                 = f.button :submit, class: 'btn-theme',
                         data: {confirm: 'Do you confirm the stake? This operation could not be canceled'}
+  - if @auction.created?
+    p
+      = link_to 'Start auction', start_auction_path(@auction), method: :patch,
+              data: {confirm: 'Start auction, are you sure? You could not change auction after start'},
+              class: 'btn btn-lg btn-theme'
   p= link_to 'Return to all auctions list', auctions_path

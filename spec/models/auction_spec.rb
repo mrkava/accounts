@@ -1,5 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe Auction, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'Close_auction' do
+    it 'should change auction status to finished' do
+
+    end
+  end
 end

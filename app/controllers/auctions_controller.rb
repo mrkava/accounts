@@ -1,5 +1,5 @@
 class AuctionsController < ApplicationController
-  before_action :find_auction, only: [:show, :edit, :update, :destroy, :start]
+  before_action :find_auction, only: [:show, :edit, :update, :destroy, :start, :buy_immediately]
   before_action :check_created, only: [:edit, :update, :destroy, :start]
   before_action :check_user_access, only: [:edit, :update, :destroy, :start]
   skip_before_action :authenticate_user!, only: [:show, :index]
@@ -56,6 +56,11 @@ class AuctionsController < ApplicationController
   def start
     @auction.start_auction!
     redirect_back(fallback_location: root_path)
+  end
+
+  def buy_immediately
+    @auction.immediate_buy(current_user)
+    redirect_to manage_accounts_accounts_path
   end
 
   private
