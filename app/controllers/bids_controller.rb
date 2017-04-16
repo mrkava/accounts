@@ -1,17 +1,15 @@
 class BidsController < ApplicationController
   before_action :check_user_access, only: [:create]
+  before_action :check_auction_status, only: [:create]
 
   def new; end
 
   def create
-    @auction = Auction.find(params[:auction_id])
-    @last_bid = @auction.bids.last
+    #@auction = Auction.find(params[:auction_id])
     @bid = @auction.bids.new(bid_params)
     @bid.user = current_user
 
     if @bid.save
-      @auction.update_attributes(current_price: @bid.stake)
-      @last_bid.update_attributes(status: :expired) if @last_bid.present?
       flash[:notice] = 'Bid was created!'
       redirect_back(fallback_location: root_path)
     else
@@ -26,6 +24,12 @@ class BidsController < ApplicationController
     @auction = Auction.find(params[:auction_id])
     return if @auction.user != current_user
     flash[:alert] = 'You can not buy your own account!'
+    redirect_back(fallback_location: root_path)
+  end
+
+  def check_auction_status
+    return if @auction.active?
+    flash[:alert] = 'You can make bids in not active auctions!'
     redirect_back(fallback_location: root_path)
   end
 

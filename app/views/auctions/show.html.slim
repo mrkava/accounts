@@ -12,7 +12,7 @@
           ul
             li
               span.bold Age:
-              = " #{@auction.account.age}"
+              = " #{@auction.account.age} "
               | months
             li
               span.bold Own account:
@@ -31,9 +31,12 @@
         .pricing-heading
           h3 Auction information
         .pricing-terms
-          h4 End date: #{date_formatter @auction.end_date}
+          h4 Status: #{@auction.status}
         .pricing-content
           ul
+            li
+              span.bold End date:
+              = " #{date_formatter @auction.end_date}"
             li
               span.bold Minimum price:
               = " #{humanized_money_with_symbol @auction.minimum_price}"
@@ -46,8 +49,10 @@
             li
               span.bold Payment type:
               = " #{Auction::PAYMENT_TYPES.key(@auction.payment_type)}"
-        .pricing-action
-          = link_to "Buy immediately for #{humanized_money_with_symbol @auction.final_price}", auctions_path, class: 'btn btn-medium btn-theme'
+        - if @auction.active?
+          .pricing-action
+            = link_to "Buy immediately for #{humanized_money_with_symbol @auction.final_price}",
+                    auctions_path, class: 'btn btn-medium btn-theme'
     .col-lg-4
       .pricing-box-alt.special
         .pricing-heading
@@ -62,11 +67,12 @@
                 = " #{date_formatter bid.created_at} "
                 span.bold Stake:
                 = " #{humanized_money_with_symbol bid.stake}"
-        .pricing-action
-          = simple_form_for [@auction, @auction.bids.new] do |f|
-            = f.input_field :stake, label: false, value: @auction.current_price,
-                    type: :number, min: @auction.current_price
-            td
-              = f.button :submit, class: 'btn-theme',
-                      data: {confirm: 'Do you confirm the stake? This operation could not be canceled'}
+        - if @auction.active?
+          .pricing-action
+            = simple_form_for [@auction, @auction.bids.new] do |f|
+              = f.input_field :stake, label: false, value: @auction.current_price,
+                      type: :number, min: @auction.current_price
+              td
+                = f.button :submit, class: 'btn-theme',
+                        data: {confirm: 'Do you confirm the stake? This operation could not be canceled'}
   p= link_to 'Return to all auctions list', auctions_path
