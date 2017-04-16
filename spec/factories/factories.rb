@@ -27,7 +27,7 @@ FactoryGirl.define do
   end
 
   factory :bid do
-    stake_cents 1300
+    sequence(:stake_cents) { |n| 1000 + n*100 }
     association :user, factory: :user
     association :auction, factory: :auction
     status :active

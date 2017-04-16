@@ -6,7 +6,6 @@ RSpec.describe Auction, type: :model do
     let(:user_buyer) { create(:user) }
     let(:test_account) { create(:account, user: user_seller, status: :auction) }
     let(:test_auction) { create(:auction, account: test_account, user: user_seller, status: :active) }
-    #let(:test_bid) { create(:bid, auction: test_auction, user: user_buyer) }
 
     it 'should change auction status to finished' do
       test_auction.close_auction
@@ -28,6 +27,19 @@ RSpec.describe Auction, type: :model do
       test_account.reload
       expect(test_account.status).to eq('opened')
       expect(test_account.buyer_id).to eq(0)
+    end
+
+    it 'should set last bid status to :final' do
+      bid = create(:bid, auction: test_auction, user: user_buyer)
+      bid2 = create(:bid, auction: test_auction, user: user_buyer)
+      bid.reload
+      bid2.reload
+      test_auction.reload
+      test_auction.close_auction
+      test_account.reload
+      expect(bid.status).to eq('expired')
+      bid2.reload
+      expect(bid2.status).to eq('final')
     end
   end
 end
