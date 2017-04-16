@@ -38,7 +38,7 @@ class Auction < ApplicationRecord
   def close_auction
     finish_auction!
     if bids.any?
-      account.update_attributes(buyer_id: self.bids.last.user.id, status: :sold)
+      account.update_attributes(buyer_id: bids.last.user.id, status: :sold)
       bids.last.update_attributes(status: :final)
     else
       account.update_attributes(status: :opened)
@@ -46,8 +46,8 @@ class Auction < ApplicationRecord
   end
 
   def immediate_buy(user)
-    self.bids.create(user_id: user.id, stake: self.final_price)
-    self.close_auction
+    bids.create(user_id: user.id, stake: final_price)
+    close_auction
   end
 
   private
