@@ -7,8 +7,10 @@ class BidsController < ApplicationController
   def create
     @bid = @auction.bids.new(bid_params)
     @bid.user = current_user
+    @bid.stake = @auction.final_price if @bid.stake > @auction.final_price
 
     if @bid.save
+      close_auction_when_stake_over_final_price and return
       flash[:notice] = 'Bid was created!'
     else
       flash[:alert] = "Bid was NOT created! #{@bid.errors.messages[:stake].first}"
@@ -28,8 +30,14 @@ class BidsController < ApplicationController
 
   def check_auction_status
     return if @auction.active?
-    flash[:alert] = 'You can make bids in not active auctions!'
+    flash[:alert] = 'You can not make bids in not active auctions!'
     redirect_back(fallback_location: root_path)
+  end
+
+  def close_auction_when_stake_over_final_price
+    return if @bid.stake < @bid.auction.final_price
+    @bid.auction.close_auction
+    redirect_to manage_accounts_accounts_path
   end
 
   def bid_params

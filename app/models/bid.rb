@@ -18,7 +18,8 @@ class Bid < ApplicationRecord
   scope :last_bids, -> { order('created_at DESC').limit(4) }
 
   def current_price_validation
-    return if stake_cents - auction.current_price_cents > 99
+    return if stake_cents - auction.current_price_cents > 99 ||
+              stake_cents >= auction.final_price_cents
     errors.add(:stake, 'Your stake must be bigger than current price /
                         at least for 1 USD')
   end
