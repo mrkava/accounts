@@ -20,14 +20,14 @@ FactoryGirl.define do
     minimum_price_cents 1000
     final_price_cents 2000
     payment_type 0
-    end_date Time.now + 10.days
+    end_date Time.current + 10.days
     status :created
     association :user, factory: :user
     association :account, factory: :account
   end
 
   factory :bid do
-    sequence(:stake_cents) { |n| 1000 + n*100 }
+    sequence(:stake_cents) { |n| 1000 + n * 100 }
     association :user, factory: :user
     association :auction, factory: :auction
     status :active

@@ -5,17 +5,16 @@ class BidsController < ApplicationController
   def new; end
 
   def create
-    #@auction = Auction.find(params[:auction_id])
     @bid = @auction.bids.new(bid_params)
     @bid.user = current_user
 
     if @bid.save
       flash[:notice] = 'Bid was created!'
-      redirect_back(fallback_location: root_path)
     else
       flash[:alert] = "Bid was NOT created! #{@bid.errors.messages[:stake].first}"
-      redirect_back(fallback_location: root_path)
     end
+
+    redirect_back(fallback_location: root_path)
   end
 
   private

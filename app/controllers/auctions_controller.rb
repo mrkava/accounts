@@ -1,5 +1,6 @@
 class AuctionsController < ApplicationController
-  before_action :find_auction, only: [:show, :edit, :update, :destroy, :start, :buy_immediately]
+  before_action :find_auction, only: [:show, :edit, :update, :destroy,
+                                      :start, :buy_immediately]
   before_action :check_created, only: [:edit, :update, :destroy, :start]
   before_action :check_user_access, only: [:edit, :update, :destroy, :start]
   skip_before_action :authenticate_user!, only: [:show, :index]
