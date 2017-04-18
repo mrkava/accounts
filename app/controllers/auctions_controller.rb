@@ -36,8 +36,8 @@ class AuctionsController < ApplicationController
   def update
     @auction.current_price = auction_params[:minimum_price]
     if @auction.update_attributes(auction_params)
-      flash[:success] = 'Auction updated'
-      redirect_to manage_auctions_auctions_path
+      flash[:success] = 'Auction was succesfully updated'
+      redirect_to @auction
     else
       render 'edit'
     end
@@ -46,8 +46,7 @@ class AuctionsController < ApplicationController
   def destroy
     @auction.destroy
     @auction.account.delete_auction!
-    flash[:notice] = 'Account was deleted'
-    redirect_back(fallback_location: root_path)
+    redirect_to manage_auctions_auctions_path, notice: 'Auction was deleted'
   end
 
   def manage_auctions
@@ -60,8 +59,12 @@ class AuctionsController < ApplicationController
   end
 
   def buy_immediately
+    if @auction.user == current_user
+      flash[:alert] = 'You can not buy your own account!'
+      redirect_back(fallback_location: root_path) && return
+    end
     @auction.immediate_buy(current_user)
-    redirect_to manage_accounts_accounts_path
+    redirect_to manage_accounts_accounts_path, notice: 'Account was bought!'
   end
 
   private

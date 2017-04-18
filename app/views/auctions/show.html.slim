@@ -3,10 +3,15 @@
     .col-lg-12.center_header
       h1 Auction № #{@auction.id}
       - if @auction.created?
-        p
-          = link_to 'Start auction', start_auction_path(@auction), method: :patch,
-                  data: {confirm: 'Start auction, are you sure? You could not change auction after start'},
-                  class: 'btn btn-lg btn-success'
+        .row.demobtn
+          p
+            = link_to 'Start auction', start_auction_path(@auction), method: :patch,
+                    data: {confirm: 'Start auction, are you sure? You could not change auction after start'},
+                    class: 'btn btn-lg btn-success'
+            = link_to 'Edit auction', edit_auction_path(@auction), class: 'btn btn-lg btn-warning'
+            = link_to 'Delete auction', auction_path(@auction), method: :delete,
+                    data: {confirm: 'Delete auction, are you sure?'},
+                    class: 'btn btn-lg btn-danger'
     .col-lg-4
       .pricing-box-alt.special
         .pricing-heading
@@ -88,3 +93,5 @@
               data: {confirm: 'Start auction, are you sure? You could not change auction after start'},
               class: 'btn btn-lg btn-theme'
   p= link_to 'Return to all auctions list', auctions_path
+javascript:
+  $(document).ready(function () { change_confirmation_on_show_page() });

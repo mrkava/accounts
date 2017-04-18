@@ -10,10 +10,11 @@ class BidsController < ApplicationController
     @bid.stake = @auction.final_price if @bid.stake > @auction.final_price
 
     if @bid.save
-      close_auction_when_stake_over_final_price and return
+      close_auction_when_stake_over_final_price && return
       flash[:notice] = 'Bid was created!'
     else
-      flash[:alert] = "Bid was NOT created! #{@bid.errors.messages[:stake].first}"
+      flash[:alert] = "Bid was NOT created!
+                       #{@bid.errors.messages[:stake].first}"
     end
 
     redirect_back(fallback_location: root_path)
