@@ -1,11 +1,11 @@
-h1 Manage accounts
+h1.center_header Manage accounts
 .container
   .row
     = link_to new_account_path do
       .btn.btn-primary.btn-lg
         i.fa.fa-check-square-o
         |  Create account
-h3 Added accounts
+h3.center_header Added accounts
 .container
   .table-responsive
     table.table.table-bordered
@@ -25,7 +25,7 @@ h3 Added accounts
         tr
           = render @accounts
   = paginate @accounts, theme: 'twitter-bootstrap-3'
-h3 Bought accounts
+h3.center_header Bought accounts
 .container
   .table-responsive
     table.table.table-bordered

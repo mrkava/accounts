@@ -1,8 +1,19 @@
-table {
+.table {
   text-align: center;
+  thead {
+    tr {
+      th {
+        vertical-align: middle;
+      }
+    }
+  }
   th {
     text-align: center;
+    background-color: #f7f7f9;
+  }
+  th[scope='colgroup'] {
     background-color: #f2f2f2;
+    font-size: 1.3em;
   }
 }
 
