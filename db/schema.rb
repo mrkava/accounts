@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170414000547) do
+ActiveRecord::Schema.define(version: 20170419135745) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "bookmaker"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20170414000547) do
     t.integer  "current_price_cents"
     t.integer  "final_price_cents"
     t.integer  "minimum_price_cents"
-    t.datetime "end_date"
+    t.date     "end_date"
     t.integer  "user_id"
     t.integer  "account_id"
     t.datetime "created_at",                      null: false

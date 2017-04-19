@@ -1,6 +1,6 @@
 - @auctions.each do |auction|
   tr
-    td= date_formatter auction.created_at
+    td= time_formatter auction.created_at
     td= auction.account.to_s
     td= humanized_money_with_symbol auction.minimum_price
     td= humanized_money_with_symbol auction.current_price

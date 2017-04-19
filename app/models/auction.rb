@@ -13,6 +13,7 @@ class Auction < ApplicationRecord
   validate :end_date_validation, :price_validation
 
   scope :active, -> { where(status: :active) }
+  scope :yesterday, -> { where('end_date < ?', Date.today) }
 
   monetize :current_price_cents, numericality: { greater_than: 0 }
   monetize :minimum_price_cents, numericality: { greater_than: 0 }
@@ -53,7 +54,7 @@ class Auction < ApplicationRecord
   private
 
   def end_date_validation
-    return unless end_date.present? && end_date < Time.current + 24.hours
+    return unless end_date.present? && end_date < DateTime.now.tomorrow.to_date
     errors.add(:end_date, 'Auction end must be at least 24 hours from now')
   end
 

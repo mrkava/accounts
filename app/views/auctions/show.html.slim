@@ -22,8 +22,8 @@
           ul
             li
               span.bold Age:
-              = " #{@auction.account.age} "
-              | month(s)
+              |  #{@auction.account.age}
+              |  month(s)
             li
               span.bold Own account:
               - if @auction.account.own?
@@ -32,10 +32,10 @@
                 |  no
             li
               span.bold Comment:
-              = " #{@auction.account.comment}"
+              |  #{@auction.account.comment}
             li
               span.bold Seller:
-              = " #{@auction.account.user.name}"
+              |  #{@auction.account.user.name}
     .col-lg-4
       .pricing-box-alt.special
         .pricing-heading
@@ -46,19 +46,19 @@
           ul
             li
               span.bold End date:
-              = " #{date_formatter @auction.end_date}"
+              |  #{date_formatter @auction.end_date}
             li
               span.bold Minimum price:
-              = " #{humanized_money_with_symbol @auction.minimum_price}"
+              |  #{humanized_money_with_symbol @auction.minimum_price}
             li
               span.bold Current price:
-              = " #{humanized_money_with_symbol @auction.current_price}"
+              |  #{humanized_money_with_symbol @auction.current_price}
             li
               span.bold Final price:
-              = " #{humanized_money_with_symbol @auction.final_price}"
+              |  #{humanized_money_with_symbol @auction.final_price}
             li
               span.bold Payment type:
-              = " #{Auction::PAYMENT_TYPES.key(@auction.payment_type)}"
+              |  #{Auction::PAYMENT_TYPES.key(@auction.payment_type)}
         - if @auction.active?
           .pricing-action
             = link_to "Buy immediately for #{humanized_money_with_symbol @auction.final_price}",
@@ -76,9 +76,9 @@
             - @bids.each do |bid|
               li
                 span.bold Date:
-                = " #{date_formatter bid.created_at} "
-                span.bold Stake:
-                = " #{humanized_money_with_symbol bid.stake}"
+                |  #{time_formatter bid.created_at}
+                span.bold  Stake:
+                |   #{humanized_money_with_symbol bid.stake}
         - if @auction.active?
           .pricing-action
             = simple_form_for [@auction, @auction.bids.new] do |f|
