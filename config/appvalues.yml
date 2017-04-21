@@ -10,3 +10,4 @@ bookmaker:
   - Unibet
   - Bet365
 auction_minimum_comission: 300
+auction_standard_commision: 0.1

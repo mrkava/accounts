@@ -18,7 +18,7 @@ class User < ApplicationRecord
 
   def available_balance
     balance_cents - bids.active.sum(:stake_cents) -
-        auctions.active.count * Appvalues['auction_minimum_comission']
+      auctions.active.count * Appvalues['auction_minimum_comission']
   end
 
   def self.from_omniauth(auth)

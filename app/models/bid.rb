@@ -9,7 +9,7 @@ class Bid < ApplicationRecord
     end
   end
 
-  validate :current_price_validation, on: :create
+  validate :current_price_validation, :balance_validation, on: :create
 
   enum status: [:active, :expired, :final]
 
@@ -17,6 +17,19 @@ class Bid < ApplicationRecord
 
   scope :last_bids, -> { order('created_at DESC').limit(4) }
   scope :active, -> { where(status: :active) }
+
+  private
+
+  def balance_validation
+    return if user.available_balance + balance_correction >= stake_cents
+    errors.add(:stake, 'You have not enough money on
+                        your balance to make this bid!')
+  end
+
+  def balance_correction
+    return 0 unless auction.bids.any? && auction.bids.last.user == user
+    auction.bids.last.stake_cents
+  end
 
   def current_price_validation
     return if stake_cents - auction.current_price_cents > 99 ||

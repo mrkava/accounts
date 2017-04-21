@@ -12,6 +12,10 @@ class Auction < ApplicationRecord
             presence: true
   validate :end_date_validation, :price_validation
 
+  before_save do
+    self.comission = calculate_comission
+  end
+
   scope :active, -> { where(status: :active) }
   scope :yesterday, -> { where('end_date < ?', Date.today) }
 
@@ -49,6 +53,18 @@ class Auction < ApplicationRecord
   def immediate_buy(user)
     bids.create(user_id: user.id, stake: final_price)
     close_auction
+  end
+
+  def calculate_comission
+    payment_type_multiplier = case payment_type
+                              when 'immediate_pay'
+                                2
+                              when 'half_pay'
+                                1.5
+                              else
+                                1
+                              end
+    Appvalues['auction_standard_commision'] * payment_type_multiplier
   end
 
   private

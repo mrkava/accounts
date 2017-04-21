@@ -2,8 +2,6 @@ class BidsController < ApplicationController
   before_action :check_user_access, only: [:create]
   before_action :check_auction_status, only: [:create]
 
-  def new; end
-
   def create
     @bid = @auction.bids.new(bid_params)
     @bid.user = current_user
