@@ -8,11 +8,18 @@ class User < ApplicationRecord
   has_many :auctions
   has_many :bids
 
-  validates :name, :email, :password, presence: true
+  validates :name, :email, :password, presence: true, on: :create
 
   validates :name, length: { minimum: 2, maximum: 50 }
 
-  validates :password, length: { minimum: 6 }
+  validates :password, length: { minimum: 6 }, on: :create
+
+  monetize :balance_cents
+
+  def available_balance
+    balance_cents - bids.active.sum(:stake_cents) -
+        auctions.active.count * Appvalues['auction_minimum_comission']
+  end
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|

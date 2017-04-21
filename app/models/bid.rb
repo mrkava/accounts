@@ -16,6 +16,7 @@ class Bid < ApplicationRecord
   monetize :stake_cents, numericality: { greater_than: 0 }
 
   scope :last_bids, -> { order('created_at DESC').limit(4) }
+  scope :active, -> { where(status: :active) }
 
   def current_price_validation
     return if stake_cents - auction.current_price_cents > 99 ||
