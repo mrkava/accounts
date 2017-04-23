@@ -10,9 +10,9 @@ tr
       i.fa.fa-square-o
   td= auction.account.comment
   td
-    = simple_form_for [auction, auction.bids.new] do |f|
+    = simple_form_for([auction, auction.bids.new], remote: true) do |f|
       = f.input_field :stake, label: false, value: auction.current_price,
-              type: :number, min: auction.current_price
+              type: :number, min: auction.current_price, 'data-auction-id': auction.id
       = f.button :submit, class: 'btn-theme',
                 data: { confirm: 'Do you confirm the stake? This operation could not be canceled' }
   td= link_to humanized_money_with_symbol(auction.final_price), buy_immediately_auction_path(auction),

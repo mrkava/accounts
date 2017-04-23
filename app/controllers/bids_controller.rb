@@ -7,18 +7,30 @@ class BidsController < ApplicationController
     @bid.user = current_user
     @bid.stake = @auction.final_price if @bid.stake > @auction.final_price
 
+    respond_to do |format|
     if @bid.save
       close_auction_when_stake_over_final_price && return
-      flash[:notice] = 'Bid was created!'
+      format.html { html_response_after_create }
+      format.js
     else
-      flash[:alert] = "Bid was NOT created!
-                       #{@bid.errors.messages[:stake].first}"
+      format.html { html_response_after_create(false) }
     end
 
-    redirect_back(fallback_location: root_path)
+
+    end
   end
 
   private
+
+  def html_response_after_create(saved=true)
+    if saved
+      flash[:notice] = 'Bid was created!'
+    else
+      flash[:alert] = "Bid was NOT created!
+                       #{@bid.errors.messages[:stake]}"
+    end
+    redirect_back(fallback_location: root_path)
+  end
 
   def check_user_access
     @auction = Auction.find(params[:auction_id])
