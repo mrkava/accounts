@@ -24,3 +24,5 @@ h1 Current auctions
           tr
             = render @auctions
     = paginate @auctions, theme: 'twitter-bootstrap-3'
+javascript:
+    $(document).ready(function () { change_confirmation_of_bid_button () });

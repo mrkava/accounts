@@ -51,6 +51,7 @@ class Auction < ApplicationRecord
   end
 
   def immediate_buy(user)
+    return false if user.available_balance_with_auction(id) < final_price_cents
     bids.create(user_id: user.id, stake: final_price)
     close_auction
   end

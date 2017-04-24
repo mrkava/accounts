@@ -1,18 +1,14 @@
 'use strict';
 
-function change_confirmation_on_show_page() {
-    var object = $("a.btn.btn-theme");
-    change_confirmation_of_bid_button(object)
-}
+// function change_confirmation_on_show_page() {
+//     var object = $("a.btn.btn-theme");
+//     change_confirmation_of_bid_button(object)
+// }
 
-function change_confirmation_on_index_page() {
-    var object = $("#bid_stake").closest('td').next().find('a');
-    change_confirmation_of_bid_button(object)
-}
-
-function change_confirmation_of_bid_button(obj) {
-    $("#bid_stake").blur(function() {
+function change_confirmation_of_bid_button {
+    $('[data-auction-id]').blur(function() {
         var bid_stake_value = parseFloat($(this).val());
+        var obj = $(this).closest('td').next().find('a');
         var final_price = obj.text();
         var confirm_text = obj.data('confirm')
         final_price = parseFloat(final_price.slice(final_price.indexOf('$')+1));

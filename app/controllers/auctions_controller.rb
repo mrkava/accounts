@@ -3,6 +3,7 @@ class AuctionsController < ApplicationController
                                       :start, :buy_immediately]
   before_action :check_created, only: [:edit, :update, :destroy, :start]
   before_action :check_user_access, only: [:edit, :update, :destroy, :start]
+  before_action :check_own_account, only: [:buy_immediately]
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
@@ -12,6 +13,7 @@ class AuctionsController < ApplicationController
   def show
     check_user_access if @auction.created?
     @bids = @auction.bids.last_bids
+    @current_winner = @bids.any? && @bids.last.user == current_user
   end
 
   def new
@@ -59,12 +61,13 @@ class AuctionsController < ApplicationController
   end
 
   def buy_immediately
-    if @auction.user == current_user
-      flash[:alert] = 'You can not buy your own account!'
-      redirect_back(fallback_location: root_path) && return
+    if @auction.immediate_buy(current_user)
+      redirect_to manage_accounts_accounts_path, notice: 'Account was bought!'
+    else
+      flash[:alert] = 'You have not enough money on
+                        your balance to buy this account!'
+      redirect_back(fallback_location: root_path)
     end
-    @auction.immediate_buy(current_user)
-    redirect_to manage_accounts_accounts_path, notice: 'Account was bought!'
   end
 
   private
@@ -77,6 +80,12 @@ class AuctionsController < ApplicationController
 
   def find_auction
     @auction = Auction.find(params[:id])
+  end
+
+  def check_own_account
+    return unless @auction.user == current_user
+      flash[:alert] = 'You can not buy your own account!'
+      redirect_back(fallback_location: root_path)
   end
 
   def check_created

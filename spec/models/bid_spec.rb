@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Bid, type: :model do
-  let(:user_buyer) { create(:user, balance_cents: 1000) }
+  let(:user_buyer) { create(:user, balance_cents: 2000) }
   let(:test_auction) do
-    create(:auction, current_price_cents: 500, status: :active)
+    create(:auction, current_price_cents: 500,
+                     final_price_cents: 5000,
+                     status: :active)
   end
 
   describe 'Bid create' do
@@ -39,14 +41,6 @@ RSpec.describe Bid, type: :model do
     it 'should be valid if user available balance enough' do
       bid = build(:bid, auction: test_auction, user: user_buyer,
                         stake_cents: user_buyer.balance_cents)
-      expect(bid).to be_valid
-    end
-
-    it 'should correctly validate balance if last bid from same user' do
-      create(:bid, auction: test_auction, user: user_buyer,
-                   stake_cents: test_auction.current_price_cents + 100)
-      bid = build(:bid, auction: test_auction, user: user_buyer,
-                        stake_cents: test_auction.current_price_cents + 100)
       expect(bid).to be_valid
     end
   end

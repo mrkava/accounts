@@ -21,6 +21,13 @@ class User < ApplicationRecord
       auctions.active.count * Appvalues['auction_minimum_comission']
   end
 
+  def available_balance_with_auction(auction_id)
+    if active_bid = bids.active.find_by(auction_id: auction_id)
+      return available_balance + active_bid.stake_cents
+    end
+    available_balance
+  end
+
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
       user.email = auth.info.email

@@ -70,7 +70,10 @@
         .pricing-heading
           h3 Last bids
         .pricing-terms
-          h4 Info about 4 last bids
+          - if @current_winner
+            h4 Your bid is the biggest now!
+          - else
+            h4 Info about 4 last bids
         .pricing-content
           ul
             - @bids.each do |bid|

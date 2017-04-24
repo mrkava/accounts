@@ -1,2 +1,2 @@
 
-UnobtrusiveFlash.flashOptions['timeout'] = 2000;
+UnobtrusiveFlash.flashOptions['timeout'] = 3000;
