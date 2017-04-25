@@ -43,5 +43,13 @@ RSpec.describe Bid, type: :model do
                         stake_cents: user_buyer.balance_cents)
       expect(bid).to be_valid
     end
+
+    it 'should be valid if user makes 2 consecutive bids on same auction' do
+      create(:bid, auction: test_auction, user: user_buyer,
+                   stake_cents: user_buyer.balance_cents - 200)
+      bid = build(:bid, auction: test_auction, user: user_buyer,
+                  stake_cents: user_buyer.balance_cents - 100)
+      expect(bid).to be_valid
+    end
   end
 end

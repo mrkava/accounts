@@ -14,8 +14,8 @@ class BidsController < ApplicationController
       format.html { redirect_back(fallback_location: root_path) }
       format.js
     else
-      flash[:alert] = "Bid was NOT created!
-                       #{@bid.errors.messages[:stake]}"
+      flash[:alert] = "Bid was NOT created! Errors:
+                       #{@bid.errors.messages[:stake].join(', ')}"
       format.html { redirect_back(fallback_location: root_path) }
     end
     end
