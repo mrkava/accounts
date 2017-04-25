@@ -7,7 +7,7 @@ class AuctionsController < ApplicationController
   skip_before_action :authenticate_user!, only: [:show, :index]
 
   def index
-    @auctions = Auction.active.page(params[:page]).per(3)
+    @auctions = Auction.active.page(params[:page]).per(5)
   end
 
   def show
