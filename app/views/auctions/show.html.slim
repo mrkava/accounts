@@ -12,6 +12,13 @@
             = link_to 'Delete auction', auction_path(@auction), method: :delete,
                     data: {confirm: 'Delete auction, are you sure?'},
                     class: 'btn btn-lg btn-danger'
+      - if @auction.finished? && @current_winner
+        .row.demobtn
+          p
+            = link_to 'Close auction', close_auction_path(@auction), method: :patch,
+                    data: {confirm: 'Close auction, are you sure?'},
+                    class: 'btn btn-lg btn-success'
+
     .col-lg-4
       .pricing-box-alt.special
         .pricing-heading

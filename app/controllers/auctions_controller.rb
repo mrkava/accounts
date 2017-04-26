@@ -1,8 +1,16 @@
 class AuctionsController < ApplicationController
   before_action :find_auction, only: [:show, :edit, :update, :destroy,
-                                      :start, :buy_immediately]
-  before_action :check_created, only: [:edit, :update, :destroy, :start]
-  before_action :check_user_access, only: [:edit, :update, :destroy, :start]
+                                      :start, :buy_immediately, :close]
+  before_action only: [:edit, :update, :destroy, :start] do
+    check_status('created')
+  end
+  before_action only: [:close] do
+    check_status('finished')
+    check_user_access(@auction.bids.last.user)
+  end
+  before_action only: [:edit, :update, :destroy, :start] do
+    check_user_access(@auction.user)
+  end
   before_action :check_own_account, only: [:buy_immediately]
   skip_before_action :authenticate_user!, only: [:show, :index]
 
@@ -11,7 +19,7 @@ class AuctionsController < ApplicationController
   end
 
   def show
-    check_user_access if @auction.created?
+    check_user_access(@auction.user) if @auction.created?
     @bids = @auction.bids.last_bids
     @current_winner = @bids.any? && @bids.last.user == current_user
   end
@@ -62,12 +70,20 @@ class AuctionsController < ApplicationController
 
   def buy_immediately
     if @auction.immediate_buy(current_user)
-      redirect_to manage_accounts_accounts_path, notice: 'Account was bought!'
+      redirect_to bought_accounts_accounts_path,
+                  notice: 'You won the auction! You need to close auction
+                           after seller sends you account details'
     else
       flash[:alert] = 'You have not enough money on
                         your balance to buy this account!'
       redirect_back(fallback_location: root_path)
     end
+  end
+
+  def close
+    @auction.close_auction
+    redirect_to bought_accounts_accounts_path,
+                notice: 'Auction was closed! You have bought an account'
   end
 
   private
@@ -88,14 +104,14 @@ class AuctionsController < ApplicationController
       redirect_back(fallback_location: root_path)
   end
 
-  def check_created
-    return if @auction.created?
+  def check_status(status)
+    return if @auction.status == status
     redirect_to manage_auctions_auctions_path,
                 alert: 'You can not change auction'
   end
 
-  def check_user_access
-    return if @auction.user == current_user
+  def check_user_access(user)
+    return if user == current_user
     flash[:alert] = 'Access denied!'
     redirect_back(fallback_location: root_path)
   end

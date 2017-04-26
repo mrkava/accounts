@@ -36,8 +36,11 @@ class AccountsController < ApplicationController
 
   def manage_accounts
     @accounts = current_user.accounts.page(params[:page]).per(5)
+  end
+
+  def bought_accounts
     @bought_accounts = Account.bought(current_user.id).page(params[:page])
-                              .per(5)
+                           .per(5)
   end
 
   private

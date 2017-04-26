@@ -5,7 +5,7 @@ class Auction < ApplicationRecord
   belongs_to :account
   has_many :bids
 
-  enum status: [:created, :active, :finished]
+  enum status: [:created, :active, :finished, :closed]
   enum payment_type: [:immediate_pay, :half_pay, :end_period_pay]
 
   validates :payment_type, :final_price, :minimum_price, :end_date,
@@ -17,6 +17,7 @@ class Auction < ApplicationRecord
   end
 
   scope :active, -> { where(status: :active) }
+  scope :make_closed, -> { where('end_date < ? and status = ?', Date.today - 24.hours, 'finished') }
   scope :yesterday, -> { where('end_date < ?', Date.today) }
 
   monetize :current_price_cents, numericality: { greater_than: 0 }
@@ -27,21 +28,25 @@ class Auction < ApplicationRecord
                     'Pay 50% immediately and 50% after 30 days' => 'half_pay',
                     'Pay 30 days after auction end' => 'end_period_pay' }.freeze
 
-  aasm column: :status, enum: true do
+  aasm column: :status, enum: true, skip_validation_on_save: true do
     state :created, initial: true
-    state :active, :finished
+    state :active, :finished, :closed
 
     event :start_auction do
       transitions from: :created, to: :active
     end
 
-    event :finish_auction do
+    event :finish_auction_event do
       transitions from: :active, to: :finished
+    end
+
+    event :close_auction_event do
+      transitions from: :finished, to: :closed
     end
   end
 
   def close_auction
-    finish_auction!
+    close_auction_event!
     if bids.any?
       account.update_attributes(buyer_id: bids.last.user.id, status: :sold)
       bids.last.update_attributes(status: :final)
@@ -50,10 +55,15 @@ class Auction < ApplicationRecord
     end
   end
 
+  def finish_auction
+    self.status = :finished
+    save(validate: false)
+  end
+
   def immediate_buy(user)
     return false if user.available_balance_with_auction(id) < final_price_cents
     bids.create(user_id: user.id, stake: final_price)
-    close_auction
+    finish_auction
   end
 
   def calculate_comission

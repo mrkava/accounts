@@ -10,7 +10,7 @@ class BidsController < ApplicationController
     respond_to do |format|
     if @bid.save
       flash[:notice] = 'Bid was created!'
-      close_auction_when_stake_over_final_price && return
+      finish_auction_when_stake_over_final_price && return
       format.html { redirect_back(fallback_location: root_path) }
       format.js
     else
@@ -36,10 +36,12 @@ class BidsController < ApplicationController
     redirect_back(fallback_location: root_path)
   end
 
-  def close_auction_when_stake_over_final_price
+  def finish_auction_when_stake_over_final_price
     return if @bid.stake < @bid.auction.final_price
-    @bid.auction.close_auction
-    redirect_to manage_accounts_accounts_path
+    @bid.auction.finish_auction
+    redirect_to @bid.auction,
+                notice: 'You won the auction! You need to close auction
+                           after seller sends you account details'
   end
 
   def bid_params

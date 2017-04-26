@@ -1,0 +1,18 @@
+h3.center_header Bought accounts
+.container
+  .table-responsive
+    table.table.table-bordered
+      thead
+        tr
+          th Account ID
+          th Date_added
+          th Bookmaker
+          th Age
+          th Own?
+          th Comment
+          th Price
+          th Seller name
+      tbody
+        tr
+          = render 'bought_account', collection: @bought_accounts
+  = paginate @bought_accounts, theme: 'twitter-bootstrap-3'

@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resources :accounts, only: [:new, :create, :edit, :update, :show, :destroy] do
     collection do
       get :manage_accounts
+      get :bought_accounts
     end
   end
 
@@ -13,7 +14,7 @@ Rails.application.routes.draw do
       get :manage_auctions
     end
     member do
-      patch :start, :buy_immediately
+      patch :start, :buy_immediately, :close
     end
   end
 
